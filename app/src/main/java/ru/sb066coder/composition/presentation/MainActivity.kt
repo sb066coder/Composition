@@ -1,7 +1,8 @@
-package ru.sb066coder.composition
+package ru.sb066coder.composition.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import ru.sb066coder.composition.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
