@@ -36,6 +36,10 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // При получении Question заполнить окошки значениями
+        // Создать пустой GameResult
+        // Назначить лисенеры на 6 окошек вариантов
+        // При достижении amountOfRightAnswers перейти к финишу
         launchGameFinishedFragment(
             GameResult(
                 true,
