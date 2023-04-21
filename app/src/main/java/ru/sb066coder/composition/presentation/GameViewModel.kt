@@ -107,10 +107,6 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         )
     }
 
-    private val _finish = MutableLiveData<GameResult>()
-    val finish: LiveData<GameResult>
-        get() = _finish
-
     private fun generateNewQuestion() {
         val newQuestion = generateQuestionUseCase(gameSettings.maxSumValue)
         _question.value = newQuestion
