@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import ru.sb066coder.composition.R
 import ru.sb066coder.composition.databinding.FragmentGameFinishedBinding
 import ru.sb066coder.composition.domain.entity.GameResult
 
@@ -25,9 +26,7 @@ class GameFinishedFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGameFinishedBinding.inflate(inflater, container, false)
         return binding.root
@@ -35,6 +34,33 @@ class GameFinishedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupListeners()
+        bindViews()
+    }
+
+    private fun bindViews() {
+        val context = requireContext()
+        with(binding) {
+            ivEmojiResult.setImageResource(getSmileResId())
+            tvRequiredAnswers.text = String.format(
+                context.getString(R.string.required_answers_amount),
+                gameResult.gameSettings.minAmountOfRightAnswers.toString()
+            )
+            tvScoreAnswers.text = String.format(
+                context.getString(R.string.score_answers),
+                gameResult.amountOfRightAnswers.toString()
+            )
+            tvRequiredPercentage.text = String.format(
+                context.getString(R.string.required_answers_percent),
+                gameResult.gameSettings.minPercentOfRightAnswers.toString()
+            )
+            tvScorePercentage.text = String.format(
+                context.getString(R.string.score_percent), getScorePercentage().toString()
+            )
+        }
+    }
+
+    private fun setupListeners() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 retryGame()
@@ -46,11 +72,27 @@ class GameFinishedFragment : Fragment() {
         }
     }
 
+    private fun getSmileResId(): Int {
+        return if (gameResult.winner) {
+            R.drawable.ic_win_smile
+        } else {
+            R.drawable.ic_lose_smile
+        }
+    }
+    private fun getScorePercentage(): Int {
+        return if (gameResult.amountOfQuestions == 0) {
+            0
+        } else {
+            (gameResult.amountOfRightAnswers / gameResult.amountOfQuestions.toDouble() * 100).toInt()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    @Suppress("DEPRECATION")
     private fun parseArgs() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(KEY_GAME_RESULT, GameResult::class.java)?.let {
@@ -65,7 +107,8 @@ class GameFinishedFragment : Fragment() {
 
     private fun retryGame() {
         requireActivity().supportFragmentManager.popBackStack(
-            GameFragment.NAME, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            GameFragment.NAME, FragmentManager.POP_BACK_STACK_INCLUSIVE
+        )
     }
 
     companion object {

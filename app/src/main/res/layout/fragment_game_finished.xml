@@ -56,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tvScorePercentage"
         app:layout_constraintVertical_chainStyle="packed"
-        android:text="@string/required_percentage" />
+        android:text="@string/required_answers_percent" />
 
     <TextView
         android:id="@+id/tvScorePercentage"
@@ -69,7 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        android:text="@string/score_percentage" />
+        android:text="@string/score_percent" />
 
     <Button
         android:id="@+id/btnRetry"

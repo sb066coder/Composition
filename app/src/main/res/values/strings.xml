@@ -13,8 +13,8 @@
     <string name="progress_answers">Правильных ответов %s (минимум %s)</string>
     <string name="game_over">Game over</string>
     <string name="required_answers_amount">Необходимое количестко правильных ответов: %s</string>
+    <string name="required_answers_percent">Необходимый процент правильных ответов: %s</string>
     <string name="score_answers">Ваш счет: %s</string>
-    <string name="required_percentage">Ваш счет: %s</string>
-    <string name="score_percentage">Ваш счет: %s</string>
+    <string name="score_percent">Процент правильных ответов: %s</string>
     <string name="retry">Попробовать снова</string>
 </resources>
