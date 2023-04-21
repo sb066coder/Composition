@@ -9,11 +9,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.*
 import ru.sb066coder.composition.R
 import ru.sb066coder.composition.databinding.FragmentGameBinding
 import ru.sb066coder.composition.domain.entity.GameResult
-import ru.sb066coder.composition.domain.entity.GameSettings
 import ru.sb066coder.composition.domain.entity.Level
 
 class GameFragment : Fragment() {
@@ -23,14 +21,12 @@ class GameFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentGameBinding == null")
 
     private lateinit var level: Level
+    private val viewModelFactory by lazy {
+        GameViewModelFactory(requireActivity().application, level)
+    }
 
     private val viewModel: GameViewModel by lazy {
-        ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(
-                requireActivity().application
-            )
-        )[GameViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +46,6 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setObservers()
-        viewModel.startGame(level)
     }
 
     private fun setObservers() {
@@ -115,6 +110,7 @@ class GameFragment : Fragment() {
         _binding = null
     }
 
+    @Suppress("DEPRECATION")
     private fun parseArgs() {
         level = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(KEY_LEVEL, Level::class.java)!!
