@@ -1,7 +1,11 @@
 package ru.sb066coder.composition.presentation
 
+import android.content.Context
+import android.content.res.ColorStateList
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import ru.sb066coder.composition.R
 import ru.sb066coder.composition.domain.entity.GameResult
@@ -53,4 +57,41 @@ fun bindEmojiResult(imageView: ImageView, win: Boolean) {
             R.drawable.ic_lose_smile
         }
     )
+}
+
+@BindingAdapter("setIntToText")
+fun bindIntToString(textView: TextView, number: Int) {
+    textView.text = number.toString()
+}
+
+@BindingAdapter("setOptionalTextColor")
+fun setColorByState(textView: TextView, goodState: Boolean) {
+    textView.setTextColor(getColorByState(textView.context, goodState)) // ContextCompat.getColor(requireContext(), colorResId)
+}
+
+@BindingAdapter("setOptionalColor")
+fun setProgressBarColorByState(progressBar: ProgressBar, goodState: Boolean) {
+    val color = getColorByState(progressBar.context, goodState)
+    progressBar.progressTintList = ColorStateList.valueOf(color)
+}
+
+private fun getColorByState(context: Context, goodState: Boolean): Int {
+    val colorResId = if (goodState) {
+        android.R.color.holo_green_light
+    } else {
+        android.R.color.holo_red_light
+    }
+    return ContextCompat.getColor(context, colorResId)
+}
+
+
+interface OnOptionClickListener {
+    fun onOptionClick(option: Int)
+}
+
+@BindingAdapter("onOptionClickListener")
+fun bindOnOptionClickListener(textView: TextView, clickListener: OnOptionClickListener) {
+    textView.setOnClickListener {
+        clickListener.onOptionClick(textView.text.toString().toInt())
+    }
 }
